@@ -1,15 +1,15 @@
 :- begin_tests(nine_puzzle).
 
-test('all valid words') :-
+test('all valid words', [true(Got == Expected)]) :-
+    Grid = [a,m,n, l,k,a, d,s,r],
     AllPossible =
         [alandsk,dalska,damask,danska,drakma,dranka,kandar,kansla,
         kardan,kladsam,klamra,klandra,klarna,kramla,kransa,krasnal,
         manklar,manska,marknad,marskland,nalkas,saknad,sakral,skalad,
         skalar,skalda,skanda,skandal,skarma,skrada,skrala,skralna,
         skrama,skramla,skrana,slakna,slanka,smakar,smakrad,snarka],
-    lists:msort(AllPossible, AllPossibleSorted),
-    setof(Word, nine([a,m,n, l,k,a, d,s,r], Word), WordsSorted),
-    AllPossibleSorted == WordsSorted.
+    lists:msort(AllPossible, Expected),
+    setof(Word, nine(Grid,Word), Got).
 
 :- end_tests(nine_puzzle).
 
@@ -23,14 +23,14 @@ nine(Grid, Word) :-
     word(Word),
     atom_chars(Word, Chars),
     lists:length(Chars, Len),
-    4 =< Len, Len =< 9,
-    singletons(Chars, Grid),
-    lists:member(Center, Chars).
+    4 =< Len, Len =< 9,          % Restricted length.
+    singletons(Chars, Grid),     % Each square used at most once.
+    lists:member(Center, Chars). % Middle square must be used.
 
 singletons([], _).
-singletons([C|Cs], Grid) :-
-    extract(Grid, C, Grid1),
-    singletons(Cs, Grid1).
+singletons([X|Xs], List) :-
+    extract(List, X, List1),
+    singletons(Xs, List1).
 
 extract([X|Xs], X, Xs) :- !.
 extract([X|Xs], Y, [X|Xs1]) :-
