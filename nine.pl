@@ -4,7 +4,7 @@ test('check for alandsk') :-
     nine([a,m,n, l,k,a, d,s,r], Word),
     Word == alandsk, !.
 
-test('check for alandska', [fail]) :-
+test('check for NOT alandska', [fail]) :-
     nine([a,m,n, l,k,a, d,s,r], Word),
     Word == alandska, !.
 
@@ -16,7 +16,7 @@ test('check for dalska') :-
     nine([a,m,n, l,k,a, d,s,r], Word),
     Word == dalska, !.
 
-test('check for not alaska', [fail]) :-
+test('check for NOT alaska', [fail]) :-
     nine([a,m,n, l,k,a, d,s,r], Word),
     Word == alaska, !.
 
