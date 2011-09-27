@@ -22,8 +22,6 @@ test('check for not alaska', [fail]) :-
 
 :- end_tests(nine_puzzle).
 
-% :- use_module(library(clpfd)).
-
 nine(Grid, Word) :-
     Grid = [_L1,_L2,_L3, _L4,L5,_L6, _L7,_L8,_L9],
     read_dictionary,
@@ -31,7 +29,7 @@ nine(Grid, Word) :-
     atom_chars(Word, Chars),
     suitable_length(Chars),
     singletons(Chars, Grid),
-    member(L5, Chars).
+    lists:member(L5, Chars).
 
 suitable_length(L) :-
     lists:length(L, Len),
