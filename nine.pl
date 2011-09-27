@@ -41,7 +41,7 @@ read_dictionary :-
     word(_), % Already loaded.
     !.
 read_dictionary :-
-    see('dict2.txt'),
+    see('dict_terms.txt'),
         read(Word),
         read_word(Word),
     seen.
