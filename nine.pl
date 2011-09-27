@@ -14,8 +14,8 @@ test('all valid words', [true(Got == Expected)]) :-
 :- end_tests(nine_puzzle).
 
 % Interestingly, reading and dynamically asserting these terms instead
-% of consulting them makes the program about twice as fast?
-% See earlier revisions for that code.
+% of consulting them makes the program (or at least the dictionary
+% creation part) about twice as fast? See earlier revisions for that code.
 :- [dict_terms].
 
 nine(Grid, Word) :-
