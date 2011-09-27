@@ -1,6 +1,6 @@
 :- begin_tests(nine_puzzle).
 
-test('check all possible') :-
+test('all valid words') :-
     AllPossible =
         [alandsk,dalska,damask,danska,drakma,dranka,kandar,kansla,
         kardan,kladsam,klamra,klandra,klarna,kramla,kransa,krasnal,
@@ -13,18 +13,19 @@ test('check all possible') :-
 
 :- end_tests(nine_puzzle).
 
+% Interestingly, reading and dynamically asserting these terms instead
+% of consulting them makes the program about twice as fast?
+% See earlier revisions for that code.
+:- [dict_terms].
+
 nine(Grid, Word) :-
-    Grid = [_L1,_L2,_L3, _L4,L5,_L6, _L7,_L8,_L9],
-    read_dictionary,
+    Grid = [_,_,_, _,Center,_, _,_,_],
     word(Word),
     atom_chars(Word, Chars),
-    suitable_length(Chars),
+    lists:length(Chars, Len),
+    4 =< Len, Len =< 9,
     singletons(Chars, Grid),
-    lists:member(L5, Chars).
-
-suitable_length(L) :-
-    lists:length(L, Len),
-    4 =< Len, Len =< 9.
+    lists:member(Center, Chars).
 
 singletons([], _).
 singletons([C|Cs], Grid) :-
@@ -34,20 +35,3 @@ singletons([C|Cs], Grid) :-
 extract([X|Xs], X, Xs) :- !.
 extract([X|Xs], Y, [X|Xs1]) :-
     extract(Xs, Y, Xs1).
-
-:- dynamic word/1.
-
-read_dictionary :-
-    word(_), % Already loaded.
-    !.
-read_dictionary :-
-    see('dict_terms.txt'),
-        read(Word),
-        read_word(Word),
-    seen.
-
-read_word(end_of_file) :- !.
-read_word(Term) :-
-    assert(Term),
-    read(NextTerm),
-    read_word(NextTerm).
