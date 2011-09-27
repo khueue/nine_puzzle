@@ -1,24 +1,15 @@
 :- begin_tests(nine_puzzle).
 
-test('check for alandsk') :-
-    nine([a,m,n, l,k,a, d,s,r], Word),
-    Word == alandsk, !.
-
-test('check for NOT alandska', [fail]) :-
-    nine([a,m,n, l,k,a, d,s,r], Word),
-    Word == alandska, !.
-
-test('check for klarna') :-
-    nine([a,m,n, l,k,a, d,s,r], Word),
-    Word == klarna, !.
-
-test('check for dalska') :-
-    nine([a,m,n, l,k,a, d,s,r], Word),
-    Word == dalska, !.
-
-test('check for NOT alaska', [fail]) :-
-    nine([a,m,n, l,k,a, d,s,r], Word),
-    Word == alaska, !.
+test('check all possible') :-
+    AllPossible =
+        [alandsk,dalska,damask,danska,drakma,dranka,kandar,kansla,
+        kardan,kladsam,klamra,klandra,klarna,kramla,kransa,krasnal,
+        manklar,manska,marknad,marskland,nalkas,saknad,sakral,skalad,
+        skalar,skalda,skanda,skandal,skarma,skrada,skrala,skralna,
+        skrama,skramla,skrana,slakna,slanka,smakar,smakrad,snarka],
+    lists:msort(AllPossible, AllPossibleSorted),
+    setof(Word, nine([a,m,n, l,k,a, d,s,r], Word), WordsSorted),
+    AllPossibleSorted == WordsSorted.
 
 :- end_tests(nine_puzzle).
 
