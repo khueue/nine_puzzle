@@ -1,3 +1,8 @@
+% Interestingly, reading and dynamically asserting these terms instead
+% of consulting them makes the program (or at least the dictionary
+% creation part) about twice as fast? See earlier revisions for that code.
+:- [dict_terms].
+
 :- begin_tests(nine_puzzle).
 
 test('all valid words', [true(Got == Expected)]) :-
@@ -9,16 +14,11 @@ test('all valid words', [true(Got == Expected)]) :-
         skalar,skalda,skanda,skandal,skarma,skrada,skrala,skralna,
         skrama,skramla,skrana,slakna,slanka,smakar,smakrad,snarka],
     lists:msort(AllPossible, Expected),
-    setof(Word, nine(Grid,Word), Got).
+    setof(Word, nine1(Grid,Word), Got).
 
 :- end_tests(nine_puzzle).
 
-% Interestingly, reading and dynamically asserting these terms instead
-% of consulting them makes the program (or at least the dictionary
-% creation part) about twice as fast? See earlier revisions for that code.
-:- [dict_terms].
-
-nine(Grid, Word) :-
+nine1(Grid, Word) :-
     Grid = [_,_,_, _,Center,_, _,_,_],
     word(Word),
     atom_chars(Word, Chars),
@@ -35,3 +35,39 @@ singletons([X|Xs], List) :-
 extract([X|Xs], X, Xs) :- !.
 extract([X|Xs], Y, [X|Xs1]) :-
     extract(Xs, Y, Xs1).
+
+:- begin_tests(nine2).
+
+test('test XXX') :-
+    Word = marskland,
+    nine2(Word, [n,l,a, s,k,a, d,r,m]).
+
+:- end_tests(nine2).
+
+nine2(Word, Grid) :-
+    atom_chars(Word, WordChars),
+    WordChars = [_,_,_, _,Center,_, _,_,_],
+    permutation(WordChars, Grid),
+    Grid = [_,_,_, _,Center,_, _,_,_],
+    atom_chars(GridAtom, Grid),
+    \+ has_subword(GridAtom).
+
+has_subword(GridAtom) :-
+    word(Word),
+    atom_contains(GridAtom, Word).
+
+permutation(List, Perm) :-
+    permutation(List, [], Perm).
+
+permutation([], Perm, Perm).
+permutation([X|Xs], Perm0, Perm) :-
+    insert(Perm1, X, Perm0),
+    permutation(Xs, Perm1, Perm).
+
+insert([X|Xs], X, Xs).
+insert([X|Xs], Y, [X|Xs1]) :-
+    insert(Xs, Y, Xs1).
+
+atom_contains(Atom, SubAtom) :-
+    sub_atom(Atom, _Before, _Len, _After, SubAtom),
+    !.
