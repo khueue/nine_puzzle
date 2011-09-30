@@ -3,7 +3,7 @@
 % creation part) about twice as fast? See earlier revisions for that code.
 :- [dict_terms].
 
-:- begin_tests(nine_puzzle).
+:- begin_tests(nine1).
 
 test('all valid words', [true(Got == Expected)]) :-
     Grid = [a,m,n, l,k,a, d,s,r],
@@ -16,7 +16,7 @@ test('all valid words', [true(Got == Expected)]) :-
     lists:msort(AllPossible, Expected),
     setof(Word, nine1(Grid,Word), Got).
 
-:- end_tests(nine_puzzle).
+:- end_tests(nine1).
 
 nine1(Grid, Word) :-
     Grid = [_,_,_, _,Center,_, _,_,_],
@@ -40,7 +40,8 @@ extract([X|Xs], Y, [X|Xs1]) :-
 
 test('test XXX') :-
     Word = marskland,
-    nine2(Word, [n,l,a, s,k,a, d,r,m]).
+    nine2(Word, [n,l,a, s,k,a, d,r,m]),
+    !.
 
 :- end_tests(nine2).
 
@@ -50,9 +51,9 @@ nine2(Word, Grid) :-
     permutation(WordChars, Grid),
     Grid = [_,_,_, _,Center,_, _,_,_],
     atom_chars(GridAtom, Grid),
-    \+ has_subword(GridAtom).
+    \+ has_subword_from_dict(GridAtom).
 
-has_subword(GridAtom) :-
+has_subword_from_dict(GridAtom) :-
     word(Word),
     atom_contains(GridAtom, Word).
 
@@ -61,12 +62,12 @@ permutation(List, Perm) :-
 
 permutation([], Perm, Perm).
 permutation([X|Xs], Perm0, Perm) :-
-    insert(Perm1, X, Perm0),
+    insert(Perm0, X, Perm1),
     permutation(Xs, Perm1, Perm).
 
-insert([X|Xs], X, Xs).
-insert([X|Xs], Y, [X|Xs1]) :-
-    insert(Xs, Y, Xs1).
+insert(Ys, X, [X|Ys]).
+insert([Y|Ys], X, [Y|Ys1]) :-
+    insert(Ys, X, Ys1).
 
 atom_contains(Atom, SubAtom) :-
     sub_atom(Atom, _Before, _Len, _After, SubAtom),
