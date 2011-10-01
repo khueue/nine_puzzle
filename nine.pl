@@ -40,6 +40,11 @@ extract([X|Xs], Y, [X|Xs1]) :-
 
 test('a valid grid') :-
     Word = marskland,
+    nine2(Word, [a,m,n, l,k,a, d,s,r]),
+    !.
+
+test('another valid grid') :-
+    Word = marskland,
     nine2(Word, [n,l,a, s,k,a, d,r,m]),
     !.
 
