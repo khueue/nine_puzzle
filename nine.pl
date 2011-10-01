@@ -38,10 +38,14 @@ extract([X|Xs], Y, [X|Xs1]) :-
 
 :- begin_tests(nine2).
 
-test('test XXX') :-
+test('a valid grid') :-
     Word = marskland,
     nine2(Word, [n,l,a, s,k,a, d,r,m]),
     !.
+
+test('an invalid grid') :-
+    Word = marskland,
+    \+ nine2(Word, [r,n,a, l,k,a, s,d,m]). % Subword 'nalkas'.
 
 :- end_tests(nine2).
 
