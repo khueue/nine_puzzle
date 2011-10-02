@@ -23,9 +23,9 @@ nine1(Grid, Word) :-
     word(Word),
     atom_chars(Word, Chars),
     lists:length(Chars, Len),
-    4 =< Len, Len =< 9,          % Restricted length.
-    singletons(Chars, Grid),     % Each square used at most once.
-    lists:member(Center, Chars). % Middle square must be used.
+    4 =< Len, Len =< 9,             % Restricted length.
+    singletons(Chars, Grid),        % Each square used at most once.
+    lists:memberchk(Center, Chars). % Middle square must be used.
 
 singletons([], _).
 singletons([X|Xs], List) :-
@@ -58,7 +58,6 @@ nine2(Word, Grid) :-
     atom_chars(Word, WordChars),
     WordChars = [_,_,_, _,Center,_, _,_,_],
     permutation(WordChars, Grid),
-    Grid = [_,_,_, _,Center,_, _,_,_],
     atom_chars(GridAtom, Grid),
     \+ has_subword_from_dict(GridAtom).
 
