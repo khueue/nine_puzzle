@@ -56,7 +56,6 @@ test('an invalid grid') :-
 
 nine2(Word, Grid) :-
     atom_chars(Word, WordChars),
-    WordChars = [_,_,_, _,Center,_, _,_,_],
     permutation(WordChars, Grid),
     atom_chars(GridAtom, Grid),
     \+ has_subword_from_dict(GridAtom).
